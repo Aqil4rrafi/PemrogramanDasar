@@ -2,8 +2,8 @@
 using namespace std;
 
 struct Node {
-    int data;
-    Node* next;
+    int data; // Menyimpan nilai angka (integer)
+    Node* next; // Pointer yang menyimpan alamat memori node selanjutnya
 };
 
 // SINGLE LINKED LIST (SLL) FUNCTIONS

@@ -4,13 +4,8 @@
 #include <string>
 
 using namespace std;
-
-// Tipe data alias untuk mempermudah pembacaan
 typedef vector<vector<int>> Matriks;
 
-// ==========================================
-// DEKLARASI MODUL / FUNGSI
-// ==========================================
 void inputElemen(Matriks &M, string nama);
 void buatSemuaMatriks(Matriks &A, Matriks &B, Matriks &D, bool &isCreated);
 void cetakMatriks(const Matriks &M, string nama);
@@ -20,25 +15,14 @@ void cetakDiagonal(const Matriks &M);
 void cetakSegitigaBawah(const Matriks &M);
 void cetakSegitigaAtas(const Matriks &M);
 
-// ==========================================
-// PROGRAM UTAMA
-// ==========================================
 int main() {
-    // Definisi dimensi sesuai instruksi:
-    // A, B, C berukuran 3x4
     Matriks A(3, vector<int>(4));
     Matriks B(3, vector<int>(4));
     Matriks C(3, vector<int>(4)); 
-    
-    // D berukuran 2x3
     Matriks D(2, vector<int>(3));
-    
-    // E berukuran 2x4 (Hasil D(2x3) * A(3x4))
     Matriks E(2, vector<int>(4));
-
     bool isCreated = false;
     int pilihan;
-
     do {
         cout << "\n=========================================\n";
         cout << "       PROGRAM OPERASI MATRIKS C++       \n";
@@ -60,7 +44,6 @@ int main() {
             continue;
         }
 
-        // WARNING: Jika user memilih menu 2-7 tapi matriks belum dibuat
         if (pilihan >= 2 && pilihan <= 7 && !isCreated) {
             cout << "\n[Peringatan/Warning]: Anda belum membuat matriks!\n";
             cout << "Jalan Keluar: Silakan pilih Menu 1 terlebih dahulu untuk mengisi data.\n";
@@ -107,11 +90,6 @@ int main() {
     return 0;
 }
 
-// ==========================================
-// IMPLEMENTASI MODUL
-// ==========================================
-
-// Fungsi pembantu untuk input elemen tiap matriks
 void inputElemen(Matriks &M, string nama) {
     int baris = M.size();
     int kolom = M[0].size();
@@ -132,7 +110,6 @@ void inputElemen(Matriks &M, string nama) {
     }
 }
 
-// 1. Modul Membuat Matriks
 void buatSemuaMatriks(Matriks &A, Matriks &B, Matriks &D, bool &isCreated) {
     inputElemen(A, "Matriks A");
     inputElemen(B, "Matriks B");
@@ -141,7 +118,7 @@ void buatSemuaMatriks(Matriks &A, Matriks &B, Matriks &D, bool &isCreated) {
     cout << "\n[Sukses] Semua matriks telah berhasil diisi oleh user.\n";
 }
 
-// 2. Modul Mencetak Matriks
+
 void cetakMatriks(const Matriks &M, string nama) {
     cout << "\n" << nama << ":\n";
     for(int i = 0; i < M.size(); i++) {
@@ -152,8 +129,11 @@ void cetakMatriks(const Matriks &M, string nama) {
     }
 }
 
-// 3. Modul Menambahkan Matriks
 bool tambahMatriks(const Matriks &A, const Matriks &B, Matriks &Hasil) {
+    if (A.size() != B.size() || A[0].size() != B[0].size()) {
+        cout << "[Error] Dimensi matriks tidak cocok untuk penambahan!\n";
+        return false;
+    }
     for(int i = 0; i < A.size(); i++) {
         for(int j = 0; j < A[i].size(); j++) {
             Hasil[i][j] = A[i][j] + B[i][j];
@@ -162,9 +142,7 @@ bool tambahMatriks(const Matriks &A, const Matriks &B, Matriks &Hasil) {
     return true;
 }
 
-// 4. Modul Mengalikan Matriks
 bool kaliMatriks(const Matriks &M1, const Matriks &M2, Matriks &Hasil) {
-    // Syarat perkalian: kolom M1 (index [0].size) == baris M2 (size)
     if (M1[0].size() != M2.size()) {
         cout << "[Error] Dimensi tidak cocok untuk perkalian!\n";
         return false;
@@ -180,7 +158,6 @@ bool kaliMatriks(const Matriks &M1, const Matriks &M2, Matriks &Hasil) {
     return true;
 }
 
-// 5. Modul Diagonal Matriks (Menggunakan Matriks A sebagai sampel)
 void cetakDiagonal(const Matriks &M) {
     cout << "\nDiagonal Matriks (Sampel Matriks A):\n";
     for(int i = 0; i < M.size(); i++) {
@@ -192,7 +169,6 @@ void cetakDiagonal(const Matriks &M) {
     }
 }
 
-// 6. Modul Segitiga Bawah Matriks
 void cetakSegitigaBawah(const Matriks &M) {
     cout << "\nSegitiga Bawah (Sampel Matriks A):\n";
     for(int i = 0; i < M.size(); i++) {
@@ -204,7 +180,6 @@ void cetakSegitigaBawah(const Matriks &M) {
     }
 }
 
-// 7. Modul Segitiga Atas Matriks
 void cetakSegitigaAtas(const Matriks &M) {
     cout << "\nSegitiga Atas (Sampel Matriks A):\n";
     for(int i = 0; i < M.size(); i++) {
