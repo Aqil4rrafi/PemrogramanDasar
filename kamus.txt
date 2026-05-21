@@ -1,0 +1,235 @@
+================================================================================
+          PANDUAN UTAMA & KAMUS SAKU LENGKAP ISTILAH C++ UNTUK PRAKTIKUM (V2)
+================================================================================
+
+Dokumen edisi revisi ini dirancang khusus untuk mahasiswa/praktikan sebagai panduan
+cepat sekaligus kamus komprehensif saat praktikum. Setiap section kini dilengkapi 
+dengan definisi mendalam beserta contoh potongan kode (code snippet) konkret agar 
+mudah dipahami dan diterapkan langsung di laboratorium.
+
+--------------------------------------------------------------------------------
+1. STRUKTUR UTAMA, EKSEKUSI PROGRAM, & PENANGANAN EROR
+--------------------------------------------------------------------------------
+* Preprocessor Directive (#include)
+  Instruksi awal yang dibaca oleh compiler sebelum proses kompilasi dimulai untuk
+  memasukkan berkas pustaka (library) standar ke dalam program. Tanpa ini, perintah
+  dasar seperti input/output atau fungsi matematika tidak akan dikenali.
+  >> Contoh Code:
+     #include <iostream>  // Wajib untuk cin dan cout
+     #include <cmath>     // Wajib untuk fungsi sqrt() dan pow()
+     #include <iomanip>   // Wajib untuk mengatur presisi desimal (setw, setprecision)
+
+* Main Function (int main())
+  Fungsi utama yang bertindak sebagai gerbang masuk sekaligus titik awal eksekusi 
+  program oleh sistem operasi. Setiap kode C++ wajib memiliki satu fungsi main(). 
+  Fungsi ini mengembalikan nilai integer '0' sebagai tanda program berjalan sukses.
+  >> Contoh Code:
+     int main() {
+         // Kode Anda ditulis di dalam blok kurung kurawal ini
+         return 0; // Menandakan program berakhir dengan normal
+     }
+
+* Scope & Namespace (using namespace std;)
+  Deklarasi penentu ruang lingkup agar compiler tahu bahwa kita menggunakan pustaka
+  standar C++. Jika tidak ditulis, Anda harus mengetik 'std::' di setiap perintah.
+  >> Contoh Code:
+     // JIKA PAKAI: using namespace std;
+     cout << "Halo Praktikan!";
+     
+     // JIKA TIDAK PAKAI:
+     std::cout << "Halo Praktikan!";
+
+* Syntax Error (Eror Tata Bahasa)
+  Kesalahan akibat melanggar aturan penulisan kode C++ (lupa titik koma, salah ejaan keyword).
+  Mengakibatkan program GAGAL dikompilasi (batal menjadi aplikasi).
+  >> Contoh Code Eror:
+     cout << "Lupa titik koma" // Error: expected ';' before 'return'
+
+* Runtime Error (Eror Saat Berjalan)
+  Kode lolos kompilasi dengan sukses, namun program mendadak 'crash' atau berhenti paksa 
+  saat dijalankan karena adanya operasi logis yang tidak valid oleh komputer.
+  >> Contoh Code Penyebab Eror:
+     int a = 10;
+     int b = 0;
+     int hasil = a / b; // Crash: Division by zero!
+
+--------------------------------------------------------------------------------
+2. ARSITEKTUR FUNGSI (FUNCTION STRUCTURE) & PARAMETERISASI
+--------------------------------------------------------------------------------
+* Function Declaration / Prototype (Deklarasi Fungsi)
+  Proses mengenalkan "identitas" fungsi (nama, tipe data kembalian, dan parameternya) 
+  kepada compiler di bagian atas program sebelum fungsi main(). Tujuannya agar fungsi
+  tersebut bisa dipanggil di main() meskipun kode isinya ditulis di paling bawah.
+  >> Contoh Code:
+     void sapaUser(string nama); // Ini deklarasi/prototype fungsi
+
+* Function Implementation / Definition (Implementasi Fungsi)
+  Blok kode utuh yang berisi algoritma dan instruksi nyata dari fungsi yang dibuat.
+  >> Contoh Code:
+     void sapaUser(string nama) {
+         cout << "Halo, " << nama << "! Selamat praktikum." << endl;
+     }
+
+* Function Call (Pemanggilan Fungsi)
+  Perintah untuk menyuruh komputer melompat dan mengeksekusi fungsi yang telah didefinisikan.
+  >> Contoh Code (di dalam main):
+     sapaUser("Budi"); // Memanggil fungsi dengan argumen "Budi"
+
+* Return Type (Tipe Data Kembalian)
+  Tipe data dari hasil akhir yang dilempar kembali oleh fungsi kepada baris kode pemanggilnya. 
+  Jika fungsi hanya melakukan tugas tanpa menghasilkan nilai balik, gunakan tipe 'void'.
+  >> Contoh Code:
+     int tambah(int a, int b) { // Return type-nya int
+         return a + b;          // Mengembalikan nilai integer
+     }
+
+* Parameter vs Argument
+  - Parameter: Variabel penampung nilai sementara yang ditulis saat fungsi dirancang.
+  - Argument : Nilai riil/variabel asli yang dimasukkan ke dalam kurung fungsi saat dipanggil.
+  >> Contoh Code:
+     void cetakSkor(int skor) {...} // 'skor' adalah PARAMETER
+     
+     int main() {
+         cetakSkor(100);            // '100' adalah ARGUMENT
+     }
+
+--------------------------------------------------------------------------------
+3. MEKANISME TRANSFER DATA KE FUNGSI (PASSING ARGUMENTS)
+--------------------------------------------------------------------------------
+* Pass-by-Value (Kirim Nilai)
+  Sistem pengiriman di mana nilai argument DI-COPY/DISALIN ke parameter fungsi. 
+  Apapun perubahan nilai di dalam fungsi, TIDAK AKAN mengubah variabel asli di fungsi main().
+  >> Contoh Code:
+     void ubahNilai(int x) { x = 99; }
+     // Di main: int angka = 5; ubahNilai(angka); -> 'angka' tetap bernilai 5.
+
+* Pass-by-Reference (Kirim Referensi/Alias)
+  Mengirimkan alamat asli variabel menggunakan operator '&'. Parameter di fungsi menjadi 
+  nama alias dari variabel asli. Jika nilai di fungsi berubah, variabel di main() IKUT BERUBAH.
+  >> Contoh Code:
+     void ubahNilai(int &x) { x = 99; }
+     // Di main: int angka = 5; ubahNilai(angka); -> 'angka' SEKARANG BERUBAH JADI 99!
+
+* Pass-by-Pointer (Kirim Alamat Memori)
+  Mengirimkan alamat memori variabel secara eksplisit menggunakan tanda pointer '*'. 
+  Fungsi menjebol data asli menggunakan teknik dereference.
+  >> Contoh Code:
+     void resetKeNol(int *ptr) { *ptr = 0; }
+     // Di main: int angka = 77; resetKeNol(&angka); -> 'angka' berubah jadi 0.
+
+--------------------------------------------------------------------------------
+4. ARRAY, POINTER, & MANIPULASI MEMORI DINAMIS
+--------------------------------------------------------------------------------
+* Array (Static Array)
+  Struktur data linier untuk menyimpan banyak data bertipe sama secara berurutan di memori. 
+  Ukurannya mutlak (konstan) dan harus ditentukan sejak awal penulisan kode.
+  >> Contoh Code:
+     int kumpulanNilai[5] = {90, 85, 70, 95, 80}; // Array berkapasitas 5 laci
+
+* Index & Out of Bounds (Eror Batas Array)
+  - Index: Nomor urut laci array, selalu dimulai dari angka 0 (elemen terakhir berindeks ukuran-1).
+  - Out of Bounds: Kondisi fatal karena mengakses laci di luar batas jangkauan array.
+  >> Contoh Code Eror:
+     int data[3] = {10, 20, 30}; 
+     cout << data[3]; // ERROR! Indeks maksimum hanya sampai data[2].
+
+* Pointer & Address-of Operator (&)
+  Pointer adalah variabel khusus yang bertugas menyimpan nomor alamat memori dari variabel lain.
+  Operator '&' digunakan untuk melacak dan mengambil alamat memori dari variabel biasa.
+  >> Contoh Code:
+     int angka = 45;
+     int *ptrAngka = &angka; // ptrAngka menyimpan alamat memori milik 'angka'
+
+* Dereference Operator (*)
+  Menaruh tanda bintang di depan variabel pointer untuk menjebol dan memanipulasi nilai nyata
+  yang tersimpan di dalam alamat memori yang sedang ditunjuk.
+  >> Contoh Code:
+     *ptrAngka = 100; // Sekarang variabel 'angka' nilainya ikut berubah menjadi 100
+
+* Pointer Arithmetic (Matematika Pointer)
+  Operasi matematika seperti penambahan (ptr++) untuk MENGGESER alamat penunjuk pointer 
+  ke kotak memori sebelahnya. Sangat efektif untuk menyusuri elemen di dalam Array.
+  >> Contoh Code:
+     int arr[3] = {10, 20, 30};
+     int *p = arr; // p menunjuk ke arr[0] (nilai 10)
+     p++;          // p sekarang bergeser menunjuk ke arr[1] (nilai 20)
+
+* Dynamic Memory Allocation (new & delete)
+  Mekanisme memesan ruang memori secara manual dari sistem saat program sedang berjalan. 
+  Ukurannya bisa ditentukan fleksibel berdasarkan input user (Dynamic Array).
+  Wajib dihapus pakai 'delete' jika sudah tidak dipakai agar memori tidak bocor (Memory Leak).
+  >> Contoh Code:
+     int n;
+     cin >> n;
+     int *dynamicArr = new int[n]; // Memesan array ukuran 'n' saat runtime
+     
+     // Proses coding...
+     
+     delete[] dynamicArr; // WAJIB dihancurkan kembali untuk membebaskan memori
+
+--------------------------------------------------------------------------------
+5. STRUKTUR DATA BENTUKAN & PEMROGRAMAN BERORIENTASI OBJEK (OOP)
+--------------------------------------------------------------------------------
+* Struct (Structure)
+  Tipe data buatan untuk menyatukan beberapa variabel dengan berbagai tipe data yang berbeda
+  menjadi satu wadah. Secara default, seluruh anggotanya berstatus PUBLIC (bebas diakses).
+  >> Contoh Code:
+     struct Mahasiswa {
+         string nama;
+         double ipk;
+     }; // Jangan lupa akhiri dengan titik koma
+
+* Class & Object
+  - Class : Blueprint/cetak biru yang menggabungkan variabel (attribute) dan fungsi (method).
+  - Object: Wujud nyata atau hasil instansiasi dari Class yang aktif di memori.
+  >> Contoh Code:
+     class Mobil {
+     public:
+         string merk; // Attribute
+         void klakson() { cout << "Bim Bim!" << endl; } // Method
+     };
+     
+     // Di main: Mobil mobilBudi; -> mobilBudi adalah OBJECT nyata dari Class Mobil.
+
+* Access Specifier (public / private / protected)
+  Keyword pembatas hak akses anggota di dalam Class:
+  - public   : Boleh diakses langsung dari mana saja (termasuk fungsi main).
+  - private  : Rahasia, hanya boleh diakses oleh fungsi internal di dalam class itu sendiri.
+  - protected: Hanya bisa diakses oleh internal class dan class anak turunannya (Inheritance).
+  >> Contoh Code:
+     class Akun Bank {
+     private:
+         int saldo; // Tidak bisa diakses langsung via akun.saldo di main()
+     };
+
+* Constructor
+  Fungsi khusus di dalam class yang otomatis dipicu dan dijalankan pertama kali saat object
+  dibuat. Namanya sama persis dengan nama Class dan tidak memiliki return type (bahkan tanpa void).
+  Biasanya dipakai untuk mengisi nilai awal variabel private.
+  >> Contoh Code:
+     class Game {
+     public:
+         int nyawa;
+         Game() { // Ini Constructor
+             nyawa = 3; // Mengeset nilai awal nyawa otomatis saat game mulai
+         }
+     };
+
+* Getter & Setter (Encapsulation)
+  Metode fungsi public untuk mengamankan data private:
+  - Getter: Fungsi untuk mengambil/melihat nilai dari variabel private.
+  - Setter: Fungsi untuk mengisi/mengubah nilai variabel private dengan aturan validasi.
+  >> Contoh Code:
+     class Nilai {
+     private:
+         int skor;
+     public:
+         void setSkor(int s) { // SETTER
+             if(s >= 0) skor = s; // Memakai barikade pengaman nilai
+         }
+         int getSkor() { // GETTER
+             return skor;
+         }
+     };
+
+================================================================================
